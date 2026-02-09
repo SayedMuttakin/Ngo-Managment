@@ -1,0 +1,220 @@
+/* Collection Sheet Styles */
+
+/* Basic table styles */
+.sheet-table {
+  min-width: 1200px;
+}
+
+/* ✅ Hide page break markers in normal browser view */
+.page-break-row {
+  display: none !important;
+}
+
+
+/* Print styles - Clean and minimal */
+@media print {
+  @page {
+    margin: 0.5cm;
+    size: legal landscape;
+    /* Legal size: 8.5" x 14" (216mm x 356mm) */
+  }
+
+  /* Hide all UI elements except the sheet */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Clean body and remove all backgrounds */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    font-family: Arial, sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Remove padding and margins from main containers */
+  body>* {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Make sure only the sheet content shows */
+  #collection-sheet-content {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Table styling - Increased font sizes for better print readability */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    font-size: 11px !important;
+    page-break-inside: auto !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tfoot {
+    display: table-footer-group !important;
+  }
+
+  th,
+  td {
+    border: 1px solid #000 !important;
+    padding: 3px !important;
+    text-align: center !important;
+    font-size: 11px !important;
+  }
+
+  /* ✅ UPDATED: Allow page breaks inside rows if needed, but avoid breaking inside individual rows */
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: auto !important;
+  }
+
+  /* ✅ UPDATED: Allow page breaks between tbody sections */
+  tbody {
+    page-break-inside: auto !important;
+  }
+
+  /* ✅ GLOBAL RESET: Prevent any parent from blocking page breaks */
+  html,
+  body,
+  #root,
+  #root>div,
+  .app-container,
+  .main-content {
+    display: block !important;
+    overflow: visible !important;
+    position: static !important;
+    height: auto !important;
+  }
+
+  /* Preserve background colors */
+  th {
+    background-color: #e5e7eb !important;
+    font-weight: bold !important;
+  }
+
+  /* Ensure NO borders for title sections in header */
+  .sheet-table thead tr.border-0,
+  .sheet-table thead tr.border-0 td {
+    border: none !important;
+  }
+
+  /* Repeat table header on every page */
+  .sheet-table thead {
+    display: table-header-group !important;
+  }
+
+  /* ✅ FINAL FIX: Signature row inside tbody */
+  .signature-row td {
+    border: none !important;
+    padding-top: 2cm !important;
+    padding-bottom: 1cm !important;
+    page-break-inside: avoid !important;
+  }
+
+  .signature-row {
+    page-break-inside: avoid !important;
+    background: transparent !important;
+  }
+
+  /* ✅ PAGE BREAK: Force page break after every 8 members */
+  .page-break-row {
+    display: table-row !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    height: 1px !important;
+    line-height: 1px !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .page-break-row td {
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    padding: 0 !important;
+    height: 1px !important;
+    line-height: 1px !important;
+    background: transparent !important;
+  }
+
+  .page-break-row div {
+    height: 1px !important;
+    border: none !important;
+    display: block !important;
+  }
+
+  /* Make sure content is breakable */
+  #collection-sheet-content {
+    position: static !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* Force group header text (JAGORON/AGROSOR) to left with proper spacing */
+  .sheet-table tbody tr td[colspan] {
+    text-align: left !important;
+    padding-left: 140px !important;
+  }
+
+  .bg-red-100 {
+    background-color: #fee2e2 !important;
+  }
+
+  .bg-green-100 {
+    background-color: #dcfce7 !important;
+  }
+
+  .bg-orange-100 {
+    background-color: #fed7aa !important;
+  }
+
+  /* Ensure colors print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* ✅ DAILY SCHEDULE SPECIFIC PRINT STYLES */
+  /* Scale down daily schedules to fit 9 dates on one page */
+  .daily-schedule-sheet {
+    transform: scale(0.70) !important;
+    transform-origin: top left !important;
+    width: 142.86% !important;
+    /* Compensate for scale: 100% / 0.70 */
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .daily-schedule-sheet table {
+    font-size: 8px !important;
+    /* Smaller font for more columns */
+  }
+
+  .daily-schedule-sheet th,
+  .daily-schedule-sheet td {
+    padding: 1px !important;
+    /* Minimal padding to save space */
+    font-size: 8px !important;
+  }
+
+  .daily-schedule-sheet .sheet-table thead table td {
+    font-size: 9px !important;
+    /* Header slightly bigger */
+  }
+
+  /* Reduce signature section spacing for daily sheets */
+  .daily-schedule-sheet .signature-section {
+    margin-top: 1cm !important;
+    margin-bottom: 0.2cm !important;
+  }
+}

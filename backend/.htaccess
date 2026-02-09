@@ -1,0 +1,41 @@
+# NGO Management System - Apache Configuration
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Allow direct access to uploads folder (images)
+RewriteCond %{REQUEST_URI} ^/uploads/ [OR]
+RewriteCond %{REQUEST_URI} ^/backend/uploads/
+RewriteRule ^ - [L]
+
+# Proxy API requests to Node.js backend
+# RewriteCond %{REQUEST_URI} ^/api/
+# RewriteRule ^api/(.*)$ http://localhost:30002/api/$1 [P,L]
+
+# Proxy other backend requests
+# RewriteCond %{REQUEST_URI} !^/uploads/
+# RewriteCond %{REQUEST_URI} !^/backend/uploads/
+# RewriteRule ^(.*)$ http://localhost:30002/$1 [P,L]
+
+# Set proper MIME types for images
+<IfModule mod_mime.c>
+    AddType image/jpeg .jpg .jpeg
+    AddType image/png .png
+    AddType image/gif .gif
+    AddType image/webp .webp
+</IfModule>
+
+# Enable CORS for images
+<IfModule mod_headers.c>
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Cross-Origin-Resource-Policy "cross-origin"
+    </FilesMatch>
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Error handling
+ErrorDocument 404 "File not found"
+ErrorDocument 500 "Internal server error"

@@ -1,0 +1,476 @@
+/* ============================================
+   NGO Management System - Responsive Fixes
+   For Mobile and Tablet Views
+   ============================================ */
+
+/* Global Responsive Utilities */
+@media (max-width: 640px) {
+  /* Fix overflow issues on mobile */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Fix horizontal scrolling */
+  .max-w-7xl {
+    max-width: 100%;
+  }
+  
+  /* Fix padding on mobile */
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Fix text sizes on mobile */
+  .text-4xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  .text-6xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+}
+
+/* Dashboard Cards - Mobile View */
+@media (max-width: 768px) {
+  /* Stack cards vertically on mobile */
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+  
+  /* Fix card padding */
+  .p-6 {
+    padding: 1rem;
+  }
+  
+  /* Fix button sizes */
+  .px-4.py-3 {
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Tables - Mobile Responsive */
+@media (max-width: 640px) {
+  /* Make tables scrollable */
+  .overflow-x-auto {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Minimum table width */
+  table {
+    min-width: 100%;
+  }
+  
+  /* Fix table cell padding */
+  td, th {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Hide less important columns on mobile */
+  .hidden-mobile {
+    display: none;
+  }
+}
+
+/* Collection Sheet - Mobile View */
+@media (max-width: 768px) {
+  /* Stack collection items */
+  .collection-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Fix member cards */
+  .member-card {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  /* Fix installment buttons */
+  .installment-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .installment-buttons button {
+    width: 100%;
+  }
+}
+
+/* Forms - Mobile View */
+@media (max-width: 640px) {
+  /* Stack form fields */
+  .grid.grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Full width inputs */
+  input, select, textarea {
+    width: 100%;
+  }
+  
+  /* Fix modal width */
+  .modal-content {
+    width: 95%;
+    margin: 0 auto;
+  }
+}
+
+/* Navigation - Mobile */
+@media (max-width: 768px) {
+  /* Fix header spacing */
+  .header-content {
+    padding: 0.5rem;
+  }
+  
+  /* Stack navigation items */
+  .nav-items {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  /* Fix sidebar width on mobile */
+  .sidebar-mobile {
+    width: 80%;
+    max-width: 300px;
+  }
+}
+
+/* Collector Dashboard - Mobile */
+@media (max-width: 768px) {
+  /* Fix stats cards */
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+  
+  /* Fix branch cards */
+  .branch-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Fix collection progress */
+  .progress-bar {
+    height: 2rem;
+  }
+  
+  .progress-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Daily Collection Page - Mobile */
+@media (max-width: 768px) {
+  /* Fix collector cards */
+  .collector-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .collector-card {
+    width: 100%;
+  }
+  
+  /* Fix summary section */
+  .summary-section {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Pending Installments - Mobile */
+@media (max-width: 640px) {
+  /* Fix member cards in pending list */
+  .pending-member-card {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Fix filter controls */
+  .filter-controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .filter-controls > * {
+    width: 100%;
+  }
+}
+
+/* Total Due Page - Mobile */
+@media (max-width: 768px) {
+  /* Fix due amount cards */
+  .due-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Fix collector due cards */
+  .collector-due-card {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Member Management - Mobile */
+@media (max-width: 640px) {
+  /* Fix member list view */
+  .member-list {
+    display: block;
+  }
+  
+  .member-row {
+    display: block;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .member-row > div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+}
+
+/* Product Management - Mobile */
+@media (max-width: 768px) {
+  /* Fix product cards */
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .product-card {
+    width: 100%;
+  }
+  
+  /* Fix product details */
+  .product-details {
+    flex-direction: column;
+  }
+}
+
+/* Modals - Mobile */
+@media (max-width: 640px) {
+  /* Fix modal positioning */
+  .fixed.inset-0 {
+    padding: 1rem;
+  }
+  
+  /* Fix modal content */
+  .modal-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  /* Fix modal header */
+  .modal-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+}
+
+/* Print Styles - Keep original */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print\:block {
+    display: block !important;
+  }
+  
+  .print\:max-w-none {
+    max-width: none !important;
+  }
+  
+  .print\:px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* Tablet Specific (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Adjust grid columns for tablet */
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  
+  /* Adjust sidebar width */
+  .lg\:w-64 {
+    width: 14rem;
+  }
+  
+  /* Adjust font sizes */
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.875rem;
+  }
+}
+
+/* Fix for specific components */
+
+/* Collection Sheet Mobile Fixes */
+@media (max-width: 768px) {
+  .collection-sheet-container {
+    padding: 0.5rem;
+  }
+  
+  .member-collection-card {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+  
+  .installment-grid {
+    display: block;
+  }
+  
+  .installment-item {
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+  }
+}
+
+/* Fix Date Picker on Mobile */
+@media (max-width: 640px) {
+  input[type="date"] {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .date-picker-wrapper {
+    width: 100%;
+  }
+}
+
+/* Fix Tooltips on Mobile */
+@media (max-width: 768px) {
+  .tooltip {
+    display: none;
+  }
+  
+  /* Show as inline text on mobile */
+  .tooltip-mobile {
+    display: inline;
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+}
+
+/* Fix Action Buttons on Mobile */
+@media (max-width: 640px) {
+  .action-buttons-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .action-buttons-group button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Fix Statistics Cards */
+@media (max-width: 768px) {
+  .stats-card {
+    min-width: 100%;
+  }
+  
+  .stats-value {
+    font-size: 1.5rem;
+  }
+  
+  .stats-label {
+    font-size: 0.875rem;
+  }
+}
+
+/* Fix Breadcrumbs on Mobile */
+@media (max-width: 640px) {
+  .breadcrumb {
+    font-size: 0.75rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .breadcrumb-separator {
+    margin: 0 0.25rem;
+  }
+}
+
+/* Utility Classes for Mobile */
+@media (max-width: 640px) {
+  .mobile\:hidden {
+    display: none !important;
+  }
+  
+  .mobile\:block {
+    display: block !important;
+  }
+  
+  .mobile\:flex {
+    display: flex !important;
+  }
+  
+  .mobile\:text-sm {
+    font-size: 0.875rem !important;
+  }
+  
+  .mobile\:p-2 {
+    padding: 0.5rem !important;
+  }
+  
+  .mobile\:m-0 {
+    margin: 0 !important;
+  }
+}
+
+/* Fix Overflow Issues */
+@media (max-width: 768px) {
+  .overflow-hidden {
+    overflow-x: auto;
+  }
+  
+  .truncate {
+    white-space: normal;
+    word-wrap: break-word;
+  }
+}
+
+/* Fix Z-index Issues on Mobile */
+@media (max-width: 768px) {
+  .z-50 {
+    z-index: 9999;
+  }
+  
+  .backdrop {
+    z-index: 9998;
+  }
+}

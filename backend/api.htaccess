@@ -1,0 +1,22 @@
+# Enable PHP if disabled
+AddHandler application/x-httpd-php .php
+
+# Enable directory access
+Options +Indexes
+
+# Allow .htaccess overrides
+AllowOverride All
+
+# Enable PHP execution
+<FilesMatch "\.php$">
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+# Allow access to PHP files
+<Files ~ "\.php$">
+    Require all granted
+</Files>
+
+# Error pages
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
