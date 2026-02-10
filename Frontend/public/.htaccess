@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Proxy API requests to Node.js backend
+RewriteRule ^api/(.*)$ http://127.0.0.1:30002/api/$1 [P,L]
+
+# Proxy Uploads to Node.js backend (Bypass Apache permissions issues)
+RewriteRule ^uploads/(.*)$ http://127.0.0.1:30002/uploads/$1 [P,L]
+
+# Handled by React Router (Frontend)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]

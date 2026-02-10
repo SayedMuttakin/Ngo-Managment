@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Admin - Reset Financial Data</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .stats {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .stat-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-stats {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-stats:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Admin Panel</h1>
+        <p class="subtitle">Reset Financial Data</p>
+        
+        <div class="warning">
+            <strong>⚠️ Warning:</strong> This action will permanently delete all installments and reset member balances to zero. Members, collectors, and branches will remain intact.
+        </div>
+        
+        <div class="input-group">
+            <label for="apiUrl">API Base URL:</label>
+            <input type="text" id="apiUrl" placeholder="https://your-api-url.com" value="">
+        </div>
+        
+        <div class="input-group">
+            <label for="token">Admin Token:</label>
+            <input type="password" id="token" placeholder="Paste your login token here">
+        </div>
+        
+        <div class="stats" id="stats" style="display: none;">
+            <h3 style="margin-bottom: 15px; color: #333;">📊 Current Statistics</h3>
+            <div class="stat-row">
+                <span class="stat-label">Total Installments:</span>
+                <span class="stat-value" id="totalInstallments">-</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Total Members:</span>
+                <span class="stat-value" id="totalMembers">-</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Members with Savings:</span>
+                <span class="stat-value" id="membersWithSavings">-</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Total Savings Amount:</span>
+                <span class="stat-value" id="totalSavings">-</span>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">Processing...</p>
+        </div>
+        
+        <div class="result" id="result"></div>
+        
+        <div class="button-group">
+            <button class="btn-stats" onclick="getStats()">📊 Get Statistics</button>
+            <button class="btn-reset" onclick="resetData()" id="resetBtn">🗑️ Reset Data</button>
+        </div>
+    </div>
+
+    <script>
+        function getApiUrl() {
+            const url = document.getElementById('apiUrl').value.trim();
+            if (!url) {
+                alert('Please enter API URL');
+                return null;
+            }
+            return url.replace(/\/$/, ''); // Remove trailing slash
+        }
+
+        function getToken() {
+            const token = document.getElementById('token').value.trim();
+            if (!token) {
+                alert('Please enter admin token');
+                return null;
+            }
+            return token;
+        }
+
+        async function getStats() {
+            const apiUrl = getApiUrl();
+            const token = getToken();
+            if (!apiUrl || !token) return;
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+
+            try {
+                const response = await fetch(`${apiUrl}/api/admin/reset-stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                document.getElementById('loading').style.display = 'none';
+
+                if (data.success) {
+                    document.getElementById('stats').style.display = 'block';
+                    document.getElementById('totalInstallments').textContent = data.data.installments.total;
+                    document.getElementById('totalMembers').textContent = data.data.members.total;
+                    document.getElementById('membersWithSavings').textContent = data.data.members.withSavings;
+                    document.getElementById('totalSavings').textContent = '৳' + data.data.amounts.totalSavings.toLocaleString();
+                } else {
+                    showResult('error', 'Failed to get statistics: ' + data.message);
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                showResult('error', 'Error: ' + error.message);
+            }
+        }
+
+        async function resetData() {
+            const apiUrl = getApiUrl();
+            const token = getToken();
+            if (!apiUrl || !token) return;
+
+            if (!confirm('⚠️ Are you absolutely sure? This will DELETE ALL financial data!')) {
+                return;
+            }
+
+            if (!confirm('🚨 Last warning! This action CANNOT be undone. Continue?')) {
+                return;
+            }
+
+            document.getElementById('resetBtn').disabled = true;
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+
+            try {
+                const response = await fetch(`${apiUrl}/api/admin/reset-financial-data`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('resetBtn').disabled = false;
+
+                if (data.success) {
+                    showResult('success', `✅ Success! Deleted ${data.details.installmentsDeleted} installments and reset ${data.details.membersReset} members.`);
+                    // Refresh stats
+                    setTimeout(() => getStats(), 1000);
+                } else {
+                    showResult('error', '❌ Failed: ' + data.message);
+                }
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('resetBtn').disabled = false;
+                showResult('error', '❌ Error: ' + error.message);
+            }
+        }
+
+        function showResult(type, message) {
+            const result = document.getElementById('result');
+            result.className = 'result ' + type;
+            result.textContent = message;
+            result.style.display = 'block';
+        }
+
+        // Set default URL if on localhost
+        if (window.location.hostname === 'localhost') {
+            document.getElementById('apiUrl').value = 'http://localhost:5000';
+        }
+    </script>
+</body>
+</html>
