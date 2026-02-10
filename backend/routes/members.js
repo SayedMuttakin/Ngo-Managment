@@ -170,6 +170,7 @@ router.post('/', protect, uploadProfileImage, handleUploadError, async (req, res
   try {
     console.log('📥 Received member creation request');
     console.log('Request body:', req.body);
+    console.log('Request file:', req.file ? 'Yes' : 'No');
     console.log('totalSavings from body:', req.body.totalSavings, 'Type:', typeof req.body.totalSavings);
 
     const {
@@ -190,6 +191,19 @@ router.post('/', protect, uploadProfileImage, handleUploadError, async (req, res
       assignedCollector,
       profileImage
     } = req.body;
+
+    // Validate required fields
+    if (!name || !memberCode || !branchCode) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields',
+        details: {
+          name: !name ? 'Name is required' : undefined,
+          memberCode: !memberCode ? 'Member code is required' : undefined,
+          branchCode: !branchCode ? 'Branch code is required' : undefined
+        }
+      });
+    }
 
     // Removed duplicate validation - allow all duplicates
 

@@ -41,37 +41,69 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
-// Middleware for single profile image upload
-const uploadProfileImage = upload.single('profileImage');
+// Middleware wrapper for single profile image upload with better error handling
+const uploadProfileImage = (req, res, next) => {
+  // Create upload middleware
+  const uploadHandler = upload.single('profileImage');
 
-// Error handling middleware
+  // Execute upload with comprehensive error handling
+  uploadHandler(req, res, (error) => {
+    if (error) {
+      console.error('❌ Upload middleware error:', error);
+
+      // Handle multer-specific errors
+      if (error instanceof multer.MulterError) {
+        if (error.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({
+            success: false,
+            message: 'File too large. Maximum size is 5MB.'
+          });
+        }
+        if (error.code === 'LIMIT_UNEXPECTED_FILE') {
+          return res.status(400).json({
+            success: false,
+            message: 'Unexpected field. Only profileImage field is allowed.'
+          });
+        }
+        // Generic multer error
+        return res.status(400).json({
+          success: false,
+          message: `File upload error: ${error.message}`
+        });
+      }
+
+      // Handle file type errors
+      if (error.message === 'Only image files are allowed!') {
+        return res.status(400).json({
+          success: false,
+          message: 'Only image files (JPG, PNG, GIF, etc.) are allowed.'
+        });
+      }
+
+      // Handle any other upload errors
+      return res.status(500).json({
+        success: false,
+        message: 'File upload failed',
+        error: error.message
+      });
+    }
+
+    // No error - continue to next middleware
+    console.log('✅ Upload middleware passed - File:', req.file ? req.file.filename : 'No file uploaded');
+    next();
+  });
+};
+
+// Error handling middleware (kept for backwards compatibility but now mostly handled above)
 const handleUploadError = (error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
-    console.log('Multer error:', error);
-    if (error.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({
-        success: false,
-        message: 'File too large. Maximum size is 5MB.'
-      });
-    }
-    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
-      return res.status(400).json({
-        success: false,
-        message: 'Unexpected field. Only profileImage field is allowed.'
-      });
-    }
-  }
-  
-  if (error && error.message === 'Only image files are allowed!') {
-    return res.status(400).json({
-      success: false,
-      message: 'Only image files (JPG, PNG, GIF, etc.) are allowed.'
-    });
-  }
-  
-  // If no specific error handling, continue
+  // This should rarely be called now since uploadProfileImage handles errors
   if (error) {
-    console.log('Upload error:', error);
+    console.error('❌ Unhandled upload error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred during file processing',
+      error: error.message
+    });
   }
   next();
 };

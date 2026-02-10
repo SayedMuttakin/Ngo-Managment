@@ -164,18 +164,31 @@ app.get('/api/test-db', async (req, res) => {
   }
 });
 
-// Error handling middleware
+// Global error handler - MUST be defined BEFORE 404 handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
+  console.error('🚨 Global Error Handler:', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method
+  });
+
+  // Set default status code
+  const statusCode = err.statusCode || err.status || 500;
+
+  // Always return JSON, never HTML
+  res.status(statusCode).json({
     success: false,
-    message: 'Something went wrong!',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+    message: err.message || 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? {
+      stack: err.stack,
+      details: err.details || null
+    } : undefined
   });
 });
 
-// 404 handler for API endpoints
-app.use('*', (req, res) => {
+// 404 handler - This will only run if no routes match
+app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: 'API endpoint not found',
